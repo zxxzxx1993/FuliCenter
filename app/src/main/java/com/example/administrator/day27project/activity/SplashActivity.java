@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.utils.MFGT;
 
 public class SplashActivity extends AppCompatActivity {
      private  final long Totaltime = 2000;
@@ -31,8 +32,8 @@ public class SplashActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                finish();
+                MFGT.gotoMainActivity(SplashActivity.this);
+                MFGT.finish(SplashActivity.this);
             }
         }).start();
     }
