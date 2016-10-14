@@ -1,6 +1,7 @@
 package com.example.administrator.day27project.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new Thread(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
              long startTime =  SystemClock.currentThreadTimeMillis();
@@ -33,8 +34,8 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
                 MFGT.gotoMainActivity(SplashActivity.this);
-                MFGT.finish(SplashActivity.this);
+                finish();
             }
-        }).start();
+        },Totaltime);
     }
 }
