@@ -4,17 +4,20 @@
     android:layout_height="match_parent"
     android:id="@+id/layout_goods"
     android:layout_margin="15dp"
+
     android:weightSum="1"
-    android:background="@color/white"
+    android:background="@color/list_background"
     >
 <ImageView
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:scaleType="fitXY"
     android:id="@+id/ivGoodsThumb"
     android:layout_gravity="center"
     android:src="@drawable/nopic"
     android:layout_weight="0.42"
     android:layout_width="match_parent"
-    android:layout_height="25dp" />
+    android:layout_height="100dp" />
     <TextView
         android:id="@+id/tvGoodsName"
         android:layout_width="150dp"
