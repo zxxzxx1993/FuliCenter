@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.NewGoodsBean;
+import com.example.administrator.day27project.utils.ImageLoader;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         else {
                 GoodsViewHolder goodsViewHolder = (GoodsViewHolder) holder;
                 NewGoodsBean goods = mlist.get(position);
-
+                ImageLoader.downloadImg(mcontext,goodsViewHolder.ivGoodsThumb,goods.getGoodsThumb());
                 goodsViewHolder.tvGoodsName.setText(goods.getGoodsName());
                 goodsViewHolder.tvGoodsPrice.setText(goods.getCurrencyPrice());
             }
