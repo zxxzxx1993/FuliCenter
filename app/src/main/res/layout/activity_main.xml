@@ -13,14 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical">
-        <RadioGroup
-            android:id="@+id/rg_button_layout"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_marginBottom="3dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
             <RadioButton
+
                 android:id="@+id/layout_new_goods"
                 style="@style/menu_item_style"
                 android:text="新品"
@@ -53,6 +47,7 @@
             <RelativeLayout
                      style="@style/style_menu_item">
                 <RadioButton
+                    android:id="@+id/layout_cart"
                     style="@style/menu_item_style_cart"
                     android:text="购物车"
                     android:button="@null"
@@ -96,7 +91,6 @@
                 android:drawableTop="@drawable/selector_menu_item_personal_center"
                      style="@style/menu_item_style"/>
 
-        </RadioGroup>
     </LinearLayout>
     <View
         android:id="@+id/vline"
@@ -109,5 +103,5 @@
         android:layout_above="@+id/vline"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 </RelativeLayout>
