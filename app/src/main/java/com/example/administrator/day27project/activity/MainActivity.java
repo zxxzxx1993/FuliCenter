@@ -1,11 +1,13 @@
 package com.example.administrator.day27project.activity;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.fragment.NewGoodsFragment;
 import com.example.administrator.day27project.utils.L;
 
 import butterknife.Bind;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     RadioButton cart;
     RadioButton [] btns;
     int index;
+    Fragment[] mFrtagments;
+    NewGoodsFragment mFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
+        initFragment();
+    }
+
+    private void initFragment() {
+           mFrtagments = new Fragment[5];
+           mFragment = new NewGoodsFragment();
+          getSupportFragmentManager()
+                  .beginTransaction()
+                  .add(R.id.fragment_container,mFragment)
+                  .show(mFragment)
+                  .commit();
     }
 
     private void initView() {
