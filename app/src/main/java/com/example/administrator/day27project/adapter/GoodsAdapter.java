@@ -1,6 +1,7 @@
 package com.example.administrator.day27project.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.activity.GoodsDetailsActivity;
 import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.utils.ImageLoader;
 
@@ -18,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -75,6 +78,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
                 ImageLoader.downloadImg(mcontext,goodsViewHolder.ivGoodsThumb,goods.getGoodsThumb());
                 goodsViewHolder.tvGoodsName.setText(goods.getGoodsName());
                 goodsViewHolder.tvGoodsPrice.setText(goods.getCurrencyPrice());
+                goodsViewHolder.layoutGoods.setTag(goods.getGoodsId());
             }
     }
 
@@ -103,7 +107,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    static class GoodsViewHolder extends RecyclerView.ViewHolder {
+     class GoodsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivGoodsThumb)
         ImageView ivGoodsThumb;
         @Bind(R.id.tvGoodsName)
@@ -116,6 +120,14 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         GoodsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+             layoutGoods.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     int tag = (int) layoutGoods.getTag();
+                     mcontext.startActivity(new Intent(mcontext, GoodsDetailsActivity.class).putExtra(I.Goods.KEY_GOODS_ID,tag));
+                 }
+             });
+
         }
     }
 
