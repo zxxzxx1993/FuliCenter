@@ -14,7 +14,6 @@
         android:layout_height="60dp"
         android:gravity="center_vertical">
             <RadioButton
-
                 android:id="@+id/layout_new_goods"
                 style="@style/menu_item_style"
                 android:text="新品"
