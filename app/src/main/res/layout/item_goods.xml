@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:id="@+id/layout_goods"
     android:layout_margin="15dp"
-
     android:weightSum="1"
     android:background="@color/list_background"
     >
@@ -17,7 +16,7 @@
     android:src="@drawable/nopic"
     android:layout_weight="0.42"
     android:layout_width="match_parent"
-    android:layout_height="100dp" />
+    android:layout_height="150dp" />
     <TextView
         android:id="@+id/tvGoodsName"
         android:layout_width="150dp"
