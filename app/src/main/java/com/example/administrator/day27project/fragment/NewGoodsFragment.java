@@ -19,6 +19,7 @@ import com.example.administrator.day27project.adapter.GoodsAdapter;
 import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.net.NetDao;
 import com.example.administrator.day27project.net.OkHttpUtils;
+import com.example.administrator.day27project.utils.CommonUtils;
 import com.example.administrator.day27project.utils.ConvertUtils;
 
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class NewGoodsFragment extends Fragment {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 if (result!=null&&result.length>0){
+                    srl.setRefreshing(false);
+                    tvRefresh.setVisibility(View.GONE);
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mGoodsAdapter.initData(list);
                 }
@@ -73,6 +76,9 @@ public class NewGoodsFragment extends Fragment {
 
             @Override
             public void onError(String error) {
+                srl.setRefreshing(false);
+                tvRefresh.setVisibility(View.GONE);
+                CommonUtils.showShortToast(error);
                 Log.e("error:",error);
             }
         });
