@@ -13,6 +13,7 @@ import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.utils.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,12 +33,25 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     TextView tvGoodsPrice;
     @Bind(R.id.layout_goods)
     LinearLayout layoutGoods;
+    boolean isMore;
+    String footView;
 
-    public GoodsAdapter(Context mcontext, List<NewGoodsBean> mlist) {
-        this.mcontext = mcontext;
-        this.mlist = mlist;
+    public void setFootView(String footView) {
+        this.footView = footView;
+        notifyDataSetChanged();
     }
 
+    public GoodsAdapter(Context mcontext, List<NewGoodsBean> list) {
+        this.mcontext = mcontext;
+        mlist = new ArrayList<>();
+        mlist.addAll(list);
+    }
+   public boolean isMore(){
+       return isMore;
+   }
+    public void setMore(boolean more){
+        isMore = more;
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
@@ -51,7 +65,10 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (getItemViewType(position)==I.TYPE_FOOTER){}
+            if (getItemViewType(position)==I.TYPE_FOOTER){
+                FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
+                footerViewHolder.tvFooter.setText(footView);
+            }
         else {
                 GoodsViewHolder goodsViewHolder = (GoodsViewHolder) holder;
                 NewGoodsBean goods = mlist.get(position);
@@ -72,6 +89,18 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             return I.TYPE_FOOTER;
         }
         return I.TYPE_ITEM;
+    }
+
+    public void initData(ArrayList<NewGoodsBean> list) {
+        if (mlist!=null){
+            mlist.clear();
+        }
+        mlist.addAll(list);
+        notifyDataSetChanged();
+    }
+    public void addData(ArrayList<NewGoodsBean> list){
+        mlist.addAll(list);
+        notifyDataSetChanged();
     }
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder {

@@ -39,7 +39,7 @@ public class NewGoodsFragment extends Fragment {
     RecyclerView rv;
     @Bind(R.id.srl)
     SwipeRefreshLayout srl;
-
+    GridLayoutManager glm;
     MainActivity mcontext;
     GoodsAdapter mGoodsAdapter;
     ArrayList<NewGoodsBean> mlist;
@@ -58,11 +58,43 @@ public class NewGoodsFragment extends Fragment {
         mlist = new ArrayList<>();
         mGoodsAdapter = new GoodsAdapter(mcontext,mlist);
         initView();
-        initData();
+        initData(I.ACTION_DOWNLOAD);
+        setListener();
         return layout;
     }
 
-    private void initData() {
+    private void setListener() {
+        setPullDownlistener();
+        setPullUplistener();
+    }
+
+    private void setPullUplistener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastVisibleItemPosition = glm.findLastVisibleItemPosition();
+                if (newState==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItemPosition>=mGoodsAdapter.getItemCount()-1 && mGoodsAdapter.isMore()){
+                    pageId++;
+                    initData(I.ACTION_PULL_UP);
+                }
+            }
+        });
+    }
+
+    private void setPullDownlistener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pageId=1;
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
+                initData(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    private void initData(final int action) {
         NetDao.downloadNewGoods(mcontext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
@@ -70,7 +102,20 @@ public class NewGoodsFragment extends Fragment {
                     srl.setRefreshing(false);
                     tvRefresh.setVisibility(View.GONE);
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-                    mGoodsAdapter.initData(list);
+                   mGoodsAdapter.setMore(list!=null&&list.size()>0);
+                    if (list!=null&&list.size()<10){
+                         mGoodsAdapter.setFootView("没有更多数据");
+                    }
+                    else{
+                        mGoodsAdapter.setFootView("加载更多数据");
+                    }
+                    if (action==I.ACTION_PULL_UP)
+                    {
+                        mGoodsAdapter.addData(list);
+                    }
+                    else {
+                        mGoodsAdapter.initData(list);}
+
                 }
             }
 
@@ -91,7 +136,7 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        GridLayoutManager glm = new GridLayoutManager(mcontext, I.COLUM_NUM);
+        glm = new GridLayoutManager(mcontext, I.COLUM_NUM);
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);
         rv.setAdapter(mGoodsAdapter);
