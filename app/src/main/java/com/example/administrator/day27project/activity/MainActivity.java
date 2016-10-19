@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     Fragment[] mFrtagments;
     NewGoodsFragment mFragment;
     BoutiqueFragment mBoutiqueFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

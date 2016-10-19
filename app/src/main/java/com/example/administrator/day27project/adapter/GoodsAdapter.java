@@ -28,14 +28,6 @@ import butterknife.OnClick;
 public class GoodsAdapter extends RecyclerView.Adapter {
     Context mcontext;
     List<NewGoodsBean> mlist;
-    @Bind(R.id.ivGoodsThumb)
-    ImageView ivGoodsThumb;
-    @Bind(R.id.tvGoodsName)
-    TextView tvGoodsName;
-    @Bind(R.id.tvGoodsPrice)
-    TextView tvGoodsPrice;
-    @Bind(R.id.layout_goods)
-    LinearLayout layoutGoods;
     boolean isMore;
     String footView;
 
