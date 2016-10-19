@@ -68,7 +68,7 @@ public interface I {
 
     interface Boutique extends Goods {
         String ID="id";
-        String CAT_ID="catId";
+        String CAT_ID="cat_id";
         String TITLE="title";
         String DESCRIPTION="description";
         String NAME="name";

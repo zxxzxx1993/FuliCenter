@@ -1,15 +1,19 @@
 package com.example.administrator.day27project.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.activity.BoutiqueActivity;
+import com.example.administrator.day27project.activity.GoodsDetailsActivity;
 import com.example.administrator.day27project.bean.BoutiqueBean;
 import com.example.administrator.day27project.utils.ImageLoader;
 
@@ -22,7 +26,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/10/19.
  */
 public class BoutiqueAdapter extends RecyclerView.Adapter {
-    Context context;
+    Context mcontext;
     ArrayList<BoutiqueBean> mList;
     String footView;
     boolean isMore;
@@ -51,7 +55,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     }
 
     public BoutiqueAdapter(Context context, ArrayList<BoutiqueBean> mList) {
-        this.context = context;
+        this.mcontext = context;
         this.mList = mList;
     }
 
@@ -59,9 +63,9 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
         if (viewType == I.TYPE_FOOTER) {
-            holder = new GoodsAdapter.FooterViewHolder(LayoutInflater.from(context).inflate(R.layout.item_footer, null));
+            holder = new GoodsAdapter.FooterViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.item_footer, null));
         } else {
-            holder = new BoutiqueViewHolder(LayoutInflater.from(context).inflate(R.layout.item_boutique, null));
+            holder = new BoutiqueViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.item_boutique, null));
         }
         return holder;
     }
@@ -75,10 +79,11 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         else {
             BoutiqueViewHolder boutiqueViewolder = (BoutiqueViewHolder) holder;
             BoutiqueBean boutiqueBean = mList.get(position);
-            ImageLoader.downloadImg(context,boutiqueViewolder.ivBoutique,boutiqueBean.getImageurl());
+            ImageLoader.downloadImg(mcontext,boutiqueViewolder.ivBoutique,boutiqueBean.getImageurl());
             boutiqueViewolder.tvBoutiqueTitle.setText(boutiqueBean.getTitle());
             boutiqueViewolder.tvDescription.setText(boutiqueBean.getDescription());
             boutiqueViewolder.tvName.setText(boutiqueBean.getName());
+            boutiqueViewolder.linearLayout.setTag(boutiqueBean.getId());
         }
     }
 
@@ -95,7 +100,9 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         return I.TYPE_ITEM;
     }
 
-    static class BoutiqueViewHolder extends RecyclerView.ViewHolder{
+     class BoutiqueViewHolder extends RecyclerView.ViewHolder{
+        @Bind(R.id.lin_boutique)
+        LinearLayout linearLayout;
         @Bind(R.id.iv_boutique)
         ImageView ivBoutique;
         @Bind(R.id.tvBoutiqueTitle)
@@ -108,6 +115,13 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         BoutiqueViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int tag = (int) linearLayout.getTag();
+                    mcontext.startActivity(new Intent(mcontext, BoutiqueActivity.class).putExtra(I.Boutique.CAT_ID,tag));
+                }
+            });
         }
     }
 }
