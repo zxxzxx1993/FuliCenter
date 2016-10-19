@@ -3,6 +3,8 @@ package com.example.administrator.day27project.net;
 import android.content.Context;
 
 import com.example.administrator.day27project.I;
+import com.example.administrator.day27project.activity.MainActivity;
+import com.example.administrator.day27project.bean.BoutiqueBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
 
@@ -26,5 +28,12 @@ public class NetDao {
                 .targetClass(GoodsDetailsBean.class)
                 .execute(litener);
 
+    }
+
+    public static void downloadBoutique(Context mcontext, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> onCompleteListener) {
+        OkHttpUtils utils = new OkHttpUtils(mcontext);
+        utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
+                .targetClass(BoutiqueBean[].class)
+                .execute(onCompleteListener);
     }
 }
