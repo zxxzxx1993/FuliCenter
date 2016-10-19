@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2016/10/19.
  */
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
@@ -50,13 +50,11 @@ public class BoutiqueFragment extends Fragment {
         mList = new ArrayList<>();
         mcontext = (MainActivity) getContext();
         mBoutiqueAdapter = new BoutiqueAdapter(mcontext,mList);
-        initView();
-        initData(I.ACTION_DOWNLOAD);
-        setListener();
+       super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
-    private void setListener() {
+    protected void setListener() {
         setPullDownlistener();
         setPullUplistener();
     }
@@ -85,7 +83,7 @@ public class BoutiqueFragment extends Fragment {
         });
     }
 
-    private void initData(final int action) {
+    protected void initData(final int action) {
         NetDao.downloadBoutique(mcontext,new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
@@ -119,7 +117,7 @@ public class BoutiqueFragment extends Fragment {
             }
         });
     }
-    private void initView() {
+    protected void initView() {
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),

@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewGoodsFragment extends Fragment {
+public class NewGoodsFragment extends BaseFragment {
 
 
     @Bind(R.id.tv_refresh)
@@ -57,13 +57,11 @@ public class NewGoodsFragment extends Fragment {
         mcontext = (MainActivity) getContext();
         mlist = new ArrayList<>();
         mGoodsAdapter = new GoodsAdapter(mcontext,mlist);
-        initView();
-        initData(I.ACTION_DOWNLOAD);
-        setListener();
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
-    private void setListener() {
+    protected void setListener() {
         setPullDownlistener();
         setPullUplistener();
     }
@@ -94,7 +92,7 @@ public class NewGoodsFragment extends Fragment {
         });
     }
 
-    private void initData(final int action) {
+    protected void initData(final int action) {
         NetDao.downloadNewGoods(mcontext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
@@ -129,7 +127,7 @@ public class NewGoodsFragment extends Fragment {
         });
     }
 
-    private void initView() {
+    protected void initView() {
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
