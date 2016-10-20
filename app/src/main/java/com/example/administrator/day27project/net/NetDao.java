@@ -3,6 +3,7 @@ package com.example.administrator.day27project.net;
 import android.content.Context;
 
 import com.example.administrator.day27project.I;
+import com.example.administrator.day27project.activity.CategoryChildActivity;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.bean.BoutiqueBean;
 import com.example.administrator.day27project.bean.CategoryChildBean;
@@ -64,5 +65,15 @@ public class NetDao {
                 .addParam(I.CategoryChild.PARENT_ID,String.valueOf(id))
                 .targetClass(CategoryChildBean[].class)
                 .execute(listener);
+    }
+
+    public static void downloadCategoryChild(CategoryChildActivity mcontext, int catId, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> onCompleteListener) {
+        OkHttpUtils utils = new OkHttpUtils(mcontext);
+        utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
+                .addParam(I.Boutique.CAT_ID,String.valueOf(catId))
+                .addParam(I.PAGE_ID,String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(NewGoodsBean[].class)
+                .execute(onCompleteListener);
     }
 }

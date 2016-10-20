@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.administrator.day27project.activity.CategoryChildActivity">
+    <LinearLayout
+        android:id="@+id/line_goods"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/good_detail_title_bg"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+        <ImageView
+            android:id="@+id/back"
+            android:src="@drawable/back"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+       <RelativeLayout
+           android:layout_weight="1"
+           android:gravity="center_horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/childName"
+               android:text="美妆"
+               android:textSize="18sp"
+               android:gravity="center_vertical"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent" />
+           <ImageView
+               android:src="@mipmap/arrow2_up"
+               android:layout_toRightOf="@+id/childName"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent" />
+       </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:background="#de3a5b"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/childprice"
+            android:drawableRight="@mipmap/arrow_order_down"
+            android:text="价格"
+            android:layout_weight="1"
+            android:background="#de3a5b"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/childTime"
+            android:text="时间"
+            android:drawableRight="@mipmap/arrow_order_down"
+            android:layout_weight="1"
+            android:background="#de3a5b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_marginBottom="1dp"
+        android:layout_above="@+id/vline"
+        android:id="@+id/fragment_child"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

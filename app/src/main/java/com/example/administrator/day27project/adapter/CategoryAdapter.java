@@ -1,13 +1,17 @@
 package com.example.administrator.day27project.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.activity.CategoryChildActivity;
 import com.example.administrator.day27project.bean.CategoryChildBean;
 import com.example.administrator.day27project.bean.CategoryGroupBean;
 import com.example.administrator.day27project.utils.ImageLoader;
@@ -101,6 +105,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         if (child != null) {
             ImageLoader.downloadImg(mContext, holder.ivChild, child.getImageUrl());
             holder.tvChildname.setText(child.getName());
+            holder.linearLayout.setTag(child.getId());
         }
         return convertView;
     }
@@ -137,14 +142,22 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
 
-    static class ChildViewHolder {
+     class ChildViewHolder {
         @Bind(R.id.iv_child)
         ImageView ivChild;
         @Bind(R.id.tv_childname)
         TextView tvChildname;
-
+        @Bind(R.id.lin_child)
+        LinearLayout linearLayout;
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+            int tag = (int) linearLayout.getTag();
+                    mContext.startActivity(new Intent(mContext, CategoryChildActivity.class).putExtra(I.Boutique.CAT_ID,tag));
+                }
+            });
         }
     }
 }
