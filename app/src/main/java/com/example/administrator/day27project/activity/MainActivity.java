@@ -9,7 +9,9 @@ import android.widget.RadioButton;
 
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.adapter.CategoryAdapter;
 import com.example.administrator.day27project.fragment.BoutiqueFragment;
+import com.example.administrator.day27project.fragment.CotegoryFragment;
 import com.example.administrator.day27project.fragment.NewGoodsFragment;
 import com.example.administrator.day27project.utils.L;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment[] mFrtagments;
     NewGoodsFragment mFragment;
     BoutiqueFragment mBoutiqueFragment;
+    CotegoryFragment mCotegoryFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +51,16 @@ public class MainActivity extends AppCompatActivity {
            mFrtagments = new Fragment[5];
            mFragment = new NewGoodsFragment();
           mBoutiqueFragment = new BoutiqueFragment();
+         mCotegoryFragment = new CotegoryFragment();
         mFrtagments[0] = mFragment;
         mFrtagments[1] = mBoutiqueFragment;
+        mFrtagments[2] = mCotegoryFragment;
           getSupportFragmentManager()
                   .beginTransaction()
                  .add(R.id.fragment_container,mFragment)
                   .add(R.id.fragment_container,mBoutiqueFragment)
+                  .add(R.id.fragment_container,mCotegoryFragment)
+                  .hide(mCotegoryFragment)
                   .hide(mBoutiqueFragment)
                   .show(mFragment)
                   .commit();

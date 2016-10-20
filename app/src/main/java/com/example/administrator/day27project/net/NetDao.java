@@ -5,8 +5,12 @@ import android.content.Context;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.bean.BoutiqueBean;
+import com.example.administrator.day27project.bean.CategoryChildBean;
+import com.example.administrator.day27project.bean.CategoryGroupBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -44,6 +48,21 @@ public class NetDao {
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodsBean[].class)
+                .execute(listener);
+    }
+
+    public static void downloadCategory(Context context, OkHttpUtils.OnCompleteListener<CategoryGroupBean[]> listener) {
+        OkHttpUtils utils = new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
+                .targetClass(CategoryGroupBean[].class)
+                .execute(listener);
+    }
+
+    public static void downloadChild(Context context, int id, OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener) {
+        OkHttpUtils utils = new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
+                .addParam(I.CategoryChild.PARENT_ID,String.valueOf(id))
+                .targetClass(CategoryChildBean[].class)
                 .execute(listener);
     }
 }
