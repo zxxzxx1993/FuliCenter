@@ -28,7 +28,9 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     Context mContext;
     ArrayList<CategoryGroupBean> mGroupList;
     ArrayList<ArrayList<CategoryChildBean>> mChildList;
-
+    ArrayList<CategoryChildBean> list;
+    String name;
+    int tag;
     public CategoryAdapter(Context mContext, ArrayList<CategoryGroupBean> GroupList, ArrayList<ArrayList<CategoryChildBean>> ChildList) {
         this.mContext = mContext;
         mGroupList = new ArrayList<>();
@@ -103,9 +105,11 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }
         CategoryChildBean child = getChild(groupPosition, childPosition);
         if (child != null) {
+                list  = mChildList.get(groupPosition);
             ImageLoader.downloadImg(mContext, holder.ivChild, child.getImageUrl());
             holder.tvChildname.setText(child.getName());
-            holder.linearLayout.setTag(child.getId());
+            tag =child.getId();
+            name = mGroupList.get(groupPosition).getName();
         }
         return convertView;
     }
@@ -154,8 +158,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-            int tag = (int) linearLayout.getTag();
-                    mContext.startActivity(new Intent(mContext, CategoryChildActivity.class).putExtra(I.Boutique.CAT_ID,tag));
+                    mContext.startActivity(new Intent(mContext, CategoryChildActivity.class).putExtra(I.Boutique.CAT_ID,tag).putExtra("name",name).putExtra("list",list));
                 }
             });
         }
