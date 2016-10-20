@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="15dp"
+    android:background="@color/list_background"
+     android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_marginLeft="30dp"
+    android:id="@+id/ivGroup"
+    android:src="@drawable/nopic"
+    android:layout_width="40dp"
+    android:layout_height="70dp" />
+    <TextView
+        android:id="@+id/tvGroupname"
+        android:text="回火"
+        android:textSize="18sp"
+        android:layout_toRightOf="@+id/ivGroup"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp" />
+    <ImageView
+        android:id="@+id/ivIs_expand"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/expand_on"
+        android:layout_width="30dp"
+        android:layout_height="70dp" />
+</RelativeLayout>
