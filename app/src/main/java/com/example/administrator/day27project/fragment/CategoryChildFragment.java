@@ -39,10 +39,21 @@ public class CategoryChildFragment extends BaseFragment {
     TextView tvRefresh;
     @Bind(R.id.rv)
     RecyclerView rv;
+
+
     @Bind(R.id.srl)
     SwipeRefreshLayout srl;
     GridLayoutManager glm;
     CategoryChildActivity mcontext;
+
+    public GoodsAdapter getmGoodsAdapter() {
+        return mGoodsAdapter;
+    }
+
+    public void setmGoodsAdapter(GoodsAdapter mGoodsAdapter) {
+        this.mGoodsAdapter = mGoodsAdapter;
+    }
+
     GoodsAdapter mGoodsAdapter;
     ArrayList<NewGoodsBean> mlist;
     int pageId = 1;

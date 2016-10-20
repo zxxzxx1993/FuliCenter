@@ -3,6 +3,7 @@ package com.example.administrator.day27project.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +17,8 @@ import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.utils.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,6 +34,13 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     boolean isMore;
     String footView;
 
+    public void setSortby(int sortby) {
+        this.sortby = sortby;
+        sorby();
+        notifyDataSetChanged();
+    }
+
+    int sortby = I.SORT_BY_ADDTIME_DESC;
     public void setFootView(String footView) {
         this.footView = footView;
         notifyDataSetChanged();
@@ -131,5 +141,35 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public  void  sorby(){
+        Collections.sort(mlist, new Comparator<NewGoodsBean>() {
+            @Override
+            public int compare(NewGoodsBean left, NewGoodsBean right) {
+                int result = 0;
+                switch (sortby){
+
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result= (int) (Long.valueOf(left.getAddTime()) - Long.valueOf(right.getAddTime()));
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result= (int) (Long.valueOf(right.getAddTime()) - Long.valueOf(left.getAddTime()));
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        result  = getprice(left.getCurrencyPrice()) - getprice(right.getCurrencyPrice());
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        result  = getprice(right.getCurrencyPrice()) - getprice(left.getCurrencyPrice());
+                        break;
+                }
+                return result;
+            }
+            private int getprice(String price){
+                price = price.substring(price.indexOf("￥")+1);
+                return Integer.valueOf(price);
+            }
+        });
+
     }
 }
