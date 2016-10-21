@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 
 import butterknife.Bind;
@@ -37,8 +38,18 @@ public class LoginActivity extends AppCompatActivity {
             case R.id.btn_login:
                 break;
             case R.id.btn_login_register:
-                startActivity(new Intent(this,RegisterActivity.class));
+                startActivityForResult(new Intent(this,RegisterActivity.class), I.REQUST_CODE_REGISTER);
+//                startActivity(new Intent(this,RegisterActivity.class));
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==I.REQUST_CODE_REGISTER&&resultCode==RESULT_OK){
+            String username = data.getStringExtra(I.User.USER_NAME);
+            edUsername.setText(username);
         }
     }
 }

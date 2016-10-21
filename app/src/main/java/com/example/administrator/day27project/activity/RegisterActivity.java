@@ -1,6 +1,7 @@
 package com.example.administrator.day27project.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.Result;
 import com.example.administrator.day27project.net.NetDao;
@@ -37,14 +39,11 @@ public class RegisterActivity extends AppCompatActivity {
     String nick;
     String password;
     RegisterActivity context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setContentView(R.layout.activity_register);
         context = this;
         ButterKnife.bind(this);
-
         edRegisterConfirmpassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         super.onCreate(savedInstanceState);
     }
@@ -58,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     if (result.isRetMsg()) {
                         CommonUtils.showShortToast(R.string.register_success);
+                        setResult(RESULT_OK,new Intent().putExtra(I.User.USER_NAME,username));
                         finish();
                     } else {
                         CommonUtils.showShortToast(R.string.register_fail_exists);
