@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/list_background"
+    tools:context="com.example.administrator.day27project.activity.LoginActivity">
+<LinearLayout
+    android:id="@+id/ln_login"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    <ImageView
+        android:id="@+id/iv_login_back"
+        android:src="@mipmap/back_press"
+        android:layout_width="20dp"
+        android:layout_height="match_parent" />
+    <TextView
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text="用户登录"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+</LinearLayout>
+    <EditText
+        android:background="@color/white"
+        android:id="@+id/ed_username"
+        android:hint="用户名"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/ln_login"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+    <EditText
+
+        android:hint="密码"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:layout_below="@+id/ed_username"
+        android:id="@+id/ed_password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+    <Button
+        android:textSize="20sp"
+        android:id="@+id/btn_login"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="24dp"
+        android:layout_gravity="center_horizontal"
+        android:text="登录"
+        android:background="@color/btn_login_normal"
+        android:layout_below="@+id/ed_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_login_register"
+        android:text="免费注册"
+        android:textColor="#f59323"
+        android:background="#f9ebaf"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
