@@ -10,6 +10,8 @@ import com.example.administrator.day27project.bean.CategoryChildBean;
 import com.example.administrator.day27project.bean.CategoryGroupBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
+import com.example.administrator.day27project.bean.Result;
+import com.example.administrator.day27project.utils.MD5;
 
 import java.util.ArrayList;
 
@@ -68,12 +70,24 @@ public class NetDao {
     }
 
     public static void downloadCategoryChild(CategoryChildActivity mcontext, int catId, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> onCompleteListener) {
-        OkHttpUtils utils = new OkHttpUtils(mcontext);
+        OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(mcontext);
         utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.Boutique.CAT_ID,String.valueOf(catId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodsBean[].class)
                 .execute(onCompleteListener);
+    }
+
+    public static void register(Context context, String username, String nick, String password, OkHttpUtils.OnCompleteListener<Result> listener) {
+        OkHttpUtils<Result> utils =  new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_REGISTER)
+                .addParam(I.User.USER_NAME,username)
+                .addParam(I.User.NICK,nick)
+                .addParam(I.User.PASSWORD, MD5.getMessageDigest(password))
+                .targetClass(Result.class)
+                .post()
+                .execute(listener);
+
     }
 }

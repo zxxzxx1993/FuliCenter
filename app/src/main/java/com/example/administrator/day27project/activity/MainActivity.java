@@ -1,5 +1,6 @@
 package com.example.administrator.day27project.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 
+import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.adapter.CategoryAdapter;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment mFragment;
     BoutiqueFragment mBoutiqueFragment;
     CotegoryFragment mCotegoryFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                   break;
               case R.id.layout_personal_center:
                   index=4;
+
+                   startActivity(new Intent(this,LoginActivity.class));
+
                   break;
               case R.id.layout_cart:
                   index=3;
@@ -100,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void choice() {
         if (index!=currentindex){
+            if (mFrtagments[index]==null){
+               return;
+            }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.hide(mFrtagments[currentindex]);
             if (!mFrtagments[index].isAdded()){
