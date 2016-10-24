@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.bean.UserAvatar;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -360,4 +361,24 @@ public class ImageLoader {
                 .setDragging(isDragging)
                 .showImage(context);
     }
+
+
+
+    public static String getAvatarUrl(UserAvatar user){
+        if(user!=null){
+            String url=I.DOWNLOAD_AVATAR_URL+I.NAME_OR_HXID+"="+user.getMuserName()
+                    +I.AND+I.AVATAR_TYPE+"="+user.getMavatarType()+I.AND+I.AVATAR_SUFFIX_JPG
+                    +"="+user.getMavatarSuffix()+I.AND+"width=200&height=200";
+            L.e("AvatarUrl="+url);
+            return url;
+        }
+        return null;
+    }
+    public static void setAvatar(String url,Context context,ImageView imageView){
+        ImageLoader.build(url)
+                .defaultPicture(R.drawable.contactlogo)
+                .imageView(imageView)
+                .showImage(context);
+    }
+
 }

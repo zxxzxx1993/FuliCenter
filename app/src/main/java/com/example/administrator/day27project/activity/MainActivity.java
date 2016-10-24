@@ -15,6 +15,7 @@ import com.example.administrator.day27project.adapter.CategoryAdapter;
 import com.example.administrator.day27project.fragment.BoutiqueFragment;
 import com.example.administrator.day27project.fragment.CotegoryFragment;
 import com.example.administrator.day27project.fragment.NewGoodsFragment;
+import com.example.administrator.day27project.fragment.PersonFragment;
 import com.example.administrator.day27project.utils.L;
 
 import butterknife.Bind;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment mFragment;
     BoutiqueFragment mBoutiqueFragment;
     CotegoryFragment mCotegoryFragment;
-
+    PersonFragment  mPersonFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
            mFragment = new NewGoodsFragment();
           mBoutiqueFragment = new BoutiqueFragment();
          mCotegoryFragment = new CotegoryFragment();
+        mPersonFragment = new PersonFragment();
         mFrtagments[0] = mFragment;
         mFrtagments[1] = mBoutiqueFragment;
         mFrtagments[2] = mCotegoryFragment;
+        mFrtagments[4] = mPersonFragment;
           getSupportFragmentManager()
                   .beginTransaction()
                  .add(R.id.fragment_container,mFragment)
@@ -91,8 +94,12 @@ public class MainActivity extends AppCompatActivity {
                   index=0;
                   break;
               case R.id.layout_personal_center:
+                if (FuLiCenterApplication.getUserAvatar()==null){
+                    Intent intent = new Intent(this,LoginActivity.class);
+                    startActivityForResult(intent,I.REQUST_CODE_LOGIN);
+                }else {
                   index=4;
-
+                }
                    startActivity(new Intent(this,LoginActivity.class));
 
                   break;
@@ -128,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
             else{
                 btns[i].setChecked(false);
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       choice();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == I.REQUST_CODE_LOGIN&&FuLiCenterApplication.getUserAvatar()!=null){
+            index = 4;
         }
     }
 }

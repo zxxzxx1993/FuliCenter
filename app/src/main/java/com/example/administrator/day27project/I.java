@@ -51,6 +51,7 @@ public interface I {
     int NEW_GOOD=0;
     int CATEGORY_GOOD=1;
     int CAT_ID=0;
+    int REQUST_CODE_LOGIN = 102;
 
     interface Goods {
         String KEY_RESULT = "result";
@@ -416,5 +417,6 @@ public interface I {
     /** 下载精选首页图像的接口*/
     String DOWNLOAD_IMG_URL= I.SERVER_ROOT+
             REQUEST_DOWNLOAD_IMAGE+I.QUESTION+ IMAGE_URL+"=";
-
+    String DOWNLOAD_AVATAR_URL=I.SERVER_ROOT+
+            REQUEST_DOWNLOAD_AVATAR+I.QUESTION;
 }
