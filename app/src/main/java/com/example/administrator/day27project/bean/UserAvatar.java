@@ -21,7 +21,7 @@ public class UserAvatar {
     private String mavatarPath;
     private String mavatarSuffix;
     private int mavatarType;
-    private long mavatarLastUpdateTime;
+    private String mavatarLastUpdateTime;
 
     public String getMuserName() {
         return muserName;
@@ -71,11 +71,11 @@ public class UserAvatar {
         this.mavatarType = mavatarType;
     }
 
-    public long getMavatarLastUpdateTime() {
+    public String getMavatarLastUpdateTime() {
         return mavatarLastUpdateTime;
     }
 
-    public void setMavatarLastUpdateTime(long mavatarLastUpdateTime) {
+    public void setMavatarLastUpdateTime(String mavatarLastUpdateTime) {
         this.mavatarLastUpdateTime = mavatarLastUpdateTime;
     }
 

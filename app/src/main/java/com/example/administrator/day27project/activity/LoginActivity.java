@@ -5,16 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.Result;
+import com.example.administrator.day27project.bean.UserAvatar;
+import com.example.administrator.day27project.dao.SharePrefrenceUtils;
+import com.example.administrator.day27project.dao.UserDao;
 import com.example.administrator.day27project.net.NetDao;
 import com.example.administrator.day27project.net.OkHttpUtils;
 import com.example.administrator.day27project.utils.CommonUtils;
+import com.example.administrator.day27project.utils.ResultUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -72,15 +78,26 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog pd = new ProgressDialog(context);
         pd.setMessage("登录中");
         pd.show();
-        NetDao.login(context, name, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.login(context, name, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
+            public void onSuccess(String s) {
+             Result result =   ResultUtils.getResultFromJson(s, UserAvatar.class);
                 pd.dismiss();
                 if (result==null){
                     CommonUtils.showShortToast(R.string.login_fail);
                 }else {
                     if (result.isRetMsg()){
-                        finish();
+                        UserAvatar user = (UserAvatar) result.getRetData();
+                        UserDao dao = new UserDao(context);
+                        boolean issuccess = dao.savaUser(user);
+                        if (issuccess){
+                            SharePrefrenceUtils.getInstance(context).saveUser(user.getMuserName());
+                            FuLiCenterApplication.setUserAvatar(user);
+                            finish();
+                        }
+                       else {
+                            CommonUtils.showShortToast("数据库操作异常");
+                        }
                     }else if (result.getRetCode()==I.MSG_LOGIN_UNKNOW_USER){
                         CommonUtils.showShortToast(R.string.login_unknowusername);
                     }else if (result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){
