@@ -1,6 +1,7 @@
 package com.example.administrator.day27project.activity;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton [] btns;
     int index=0;
     int currentindex=0;
+    int time = 0;
     Fragment[] mFrtagments;
     NewGoodsFragment mFragment;
     BoutiqueFragment mBoutiqueFragment;
@@ -139,8 +141,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(FuLiCenterApplication.getUserAvatar()!=null){
-            index =4;
+        if (time!=0&&FuLiCenterApplication.getUserAvatar()!=null){
+            index = 4;
+        }
+        time++;
+        if (index == 4&& FuLiCenterApplication.getUserAvatar()==null){
+            index = 0;
         }
        choice();
     }
@@ -148,10 +154,9 @@ public class MainActivity extends AppCompatActivity {
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-//        Log.e("我再日你","getUserAvatar"+FuLiCenterApplication.getUserAvatar());
+//        SystemClock.sleep(500);
 //        if (requestCode == I.REQUST_CODE_LOGIN&&FuLiCenterApplication.getUserAvatar()!=null){
 //            index = 4;
-//            Log.e("我日你","getUserAvatar"+FuLiCenterApplication.getUserAvatar());
 //        }
 //    }
 }

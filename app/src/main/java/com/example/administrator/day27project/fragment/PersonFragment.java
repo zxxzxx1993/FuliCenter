@@ -1,24 +1,29 @@
 package com.example.administrator.day27project.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.day27project.FuLiCenterApplication;
+import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.activity.LoginActivity;
 import com.example.administrator.day27project.activity.MainActivity;
+import com.example.administrator.day27project.activity.PersonselfActivity;
 import com.example.administrator.day27project.bean.UserAvatar;
 import com.example.administrator.day27project.utils.ImageLoader;
 import com.example.administrator.day27project.utils.MFGT;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -47,12 +52,22 @@ public class PersonFragment extends BaseFragment {
     ImageView mPersionMyMemberCardIV;
 
     MainActivity mContext;
+    @Bind(R.id.m_Persion_See_Buyed_Treasure)
+    LinearLayout mPersionSeeBuyedTreasure;
+    @Bind(R.id.m_Persion_My_All_Card)
+    RelativeLayout mPersionMyAllCard;
+    @Bind(R.id.m_Persion_My_Live_Card)
+    RelativeLayout mPersionMyLiveCard;
+    @Bind(R.id.m_Persion_My_Online_Shop)
+    RelativeLayout mPersionMyOnlineShop;
+    @Bind(R.id.m_Persion_My_Member_Card)
+    RelativeLayout mPersionMyMemberCard;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_person, container, false);
         ButterKnife.bind(this, layout);
-        mContext= (MainActivity) getContext();
+        mContext = (MainActivity) getContext();
         super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
@@ -64,12 +79,12 @@ public class PersonFragment extends BaseFragment {
 
     @Override
     protected void initData(int action) {
-        UserAvatar user= FuLiCenterApplication.getUserAvatar();
-        if(user==null){
+        UserAvatar user = FuLiCenterApplication.getUserAvatar();
+        if (user == null) {
             MFGT.startActivity(mContext, LoginActivity.class);
-        }else {
-         mPersionUserNick.setText(user.getMuserNick());
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,mPersionUserAvatar);
+        } else {
+            mPersionUserNick.setText(user.getMuserNick());
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mPersionUserAvatar);
         }
     }
 
@@ -82,5 +97,20 @@ public class PersonFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.m_Persion_Setting)
+    public void onClick() {
+        startActivity(new Intent(mContext,PersonselfActivity.class));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        UserAvatar user = FuLiCenterApplication.getUserAvatar();
+        if (user != null) {
+            mPersionUserNick.setText(user.getMuserNick());
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mPersionUserAvatar);
+        }
     }
 }

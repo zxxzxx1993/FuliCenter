@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/list_background"
+    tools:context="com.example.administrator.day27project.activity.PersonselfActivity">
+<RelativeLayout
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/back2setting"
+        android:src="@drawable/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="个人资料"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/back2setting"
+        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:src="@drawable/contactlogo"
+        android:id="@+id/ueravatar"
+        android:layout_below="@+id/back2setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_name"
+        android:text="aa"
+        android:textSize="25sp"
+        android:layout_below="@+id/back2setting"
+        android:layout_toRightOf="@+id/ueravatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/usernick"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:layout_below="@+id/ueravatar"
+        android:text="昵称"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/setingnick"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ueravatar"
+        android:src="@drawable/right_arrow_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp" />
+    <TextView
+        android:text="aa"
+        android:id="@+id/tv_nick"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:layout_toLeftOf="@+id/setingnick"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/ueravatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tverweima"
+        android:text="我的二维码"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/usernick"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/erweima"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/usernick"
+        android:src="@drawable/tb_icon_home_qrcode_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp" />
+</RelativeLayout>
+       <Button
+           android:id="@+id/btnback"
+           android:layout_marginTop="50dp"
+           android:layout_gravity="center_vertical"
+           android:text="退出登录"
+           android:textSize="25sp"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
+           android:background="#b3e64f"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+</LinearLayout>
