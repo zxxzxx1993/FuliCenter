@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.day27project.activity.UpdateNickActivity">
+    <ImageView
+        android:src="@drawable/back"
+        android:id="@+id/updatenick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+<EditText
+    android:layout_below="@+id/updatenick"
+    android:id="@+id/ed_nick"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_update_nick"
+        android:layout_below="@+id/ed_nick"
+        android:text="确认更新"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

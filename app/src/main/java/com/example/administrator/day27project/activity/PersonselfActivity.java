@@ -3,17 +3,14 @@ package com.example.administrator.day27project.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.day27project.FuLiCenterApplication;
-import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.UserAvatar;
 import com.example.administrator.day27project.dao.SharePrefrenceUtils;
-import com.example.administrator.day27project.utils.FileUtils;
 import com.example.administrator.day27project.utils.ImageLoader;
 
 import butterknife.Bind;
@@ -45,7 +42,7 @@ public class PersonselfActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        userAvatar  = FuLiCenterApplication.getUserAvatar();
+        userAvatar = FuLiCenterApplication.getUserAvatar();
         if (userAvatar != null) {
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(userAvatar), mContext, ueravatar);
             tvNick.setText(userAvatar.getMuserNick());
@@ -60,10 +57,12 @@ public class PersonselfActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back2setting:
+                finish();
                 break;
             case R.id.ueravatar:
                 break;
             case R.id.tv_nick:
+                startActivity(new Intent(this, UpdateNickActivity.class));
                 break;
             case R.id.erweima:
                 break;
@@ -71,12 +70,23 @@ public class PersonselfActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btnback)
-    public void onClick() {
-      if (ueravatar!=null){
-          SharePrefrenceUtils.getInstance(mContext).removeUser();
-          FuLiCenterApplication.setUserAvatar(null);
-          startActivity(new Intent(mContext,LoginActivity.class));
-      }
+    public void onClick1() {
+        if (ueravatar != null) {
+            SharePrefrenceUtils.getInstance(mContext).removeUser();
+            FuLiCenterApplication.setUserAvatar(null);
+            startActivity(new Intent(mContext, LoginActivity.class));
+        }
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvNick.setText(FuLiCenterApplication.getUserAvatar().getMuserNick());
+    }
+
+    @OnClick(R.id.setingnick)
+    public void onClick() {
+        startActivity(new Intent(this, UpdateNickActivity.class));
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,9 +33,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText edUsername;
     @Bind(R.id.ed_password)
     EditText edPassword;
-     String name;
+    String name;
     String password;
     LoginActivity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 checkInput();
                 break;
             case R.id.btn_login_register:
-                startActivityForResult(new Intent(this,RegisterActivity.class), I.REQUST_CODE_REGISTER);
+                startActivityForResult(new Intent(this, RegisterActivity.class), I.REQUST_CODE_REGISTER);
 //                startActivity(new Intent(this,RegisterActivity.class));
                 break;
         }
@@ -61,17 +61,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkInput() {
         name = edUsername.getText().toString().trim();
-        password= edPassword.getText().toString().trim();
-        if (name.equals("")){
+        password = edPassword.getText().toString().trim();
+        if (name.equals("")) {
             CommonUtils.showShortToast(R.string.user_name_connot_be_empty);
             edUsername.requestFocus();
             return;
-        }else if (password.equals("")){
+        } else if (password.equals("")) {
             CommonUtils.showShortToast(R.string.password_connot_be_empty);
             edPassword.requestFocus();
             return;
         }
-   login();
+        login();
     }
 
     private void login() {
@@ -81,28 +81,27 @@ public class LoginActivity extends AppCompatActivity {
         NetDao.login(context, name, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-             Result result =   ResultUtils.getResultFromJson(s, UserAvatar.class);
+                Result result = ResultUtils.getResultFromJson(s, UserAvatar.class);
                 pd.dismiss();
-                if (result==null){
+                if (result == null) {
                     CommonUtils.showShortToast(R.string.login_fail);
-                }else {
-                    if (result.isRetMsg()){
+                } else {
+                    if (result.isRetMsg()) {
                         UserAvatar user = (UserAvatar) result.getRetData();
                         UserDao dao = new UserDao(context);
                         boolean issuccess = dao.savaUser(user);
-                        if (issuccess){
+                        if (issuccess) {
                             SharePrefrenceUtils.getInstance(context).saveUser(user.getMuserName());
                             FuLiCenterApplication.setUserAvatar(user);
                             finish();
-                        }
-                       else {
+                        } else {
                             CommonUtils.showShortToast("数据库操作异常");
                         }
-                    }else if (result.getRetCode()==I.MSG_LOGIN_UNKNOW_USER){
+                    } else if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
                         CommonUtils.showShortToast(R.string.login_unknowusername);
-                    }else if (result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){
+                    } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
                         CommonUtils.showShortToast(R.string.login_passwod_error);
-                    }else {
+                    } else {
                         CommonUtils.showShortToast(R.string.login_fail);
                     }
                 }
@@ -110,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-            CommonUtils.showShortToast(error);
+                CommonUtils.showShortToast(error);
             }
         });
     }
@@ -118,9 +117,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==I.REQUST_CODE_REGISTER&&resultCode==RESULT_OK){
+        if (requestCode == I.REQUST_CODE_REGISTER && resultCode == RESULT_OK) {
             String username = data.getStringExtra(I.User.USER_NAME);
             edUsername.setText(username);
         }
+    }
+
+    @OnClick(R.id.iv_login_back)
+    public void onClick() {
+        finish();
     }
 }
