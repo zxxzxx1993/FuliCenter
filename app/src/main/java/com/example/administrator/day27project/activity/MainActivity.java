@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
                  .add(R.id.fragment_container,mFragment)
                   .add(R.id.fragment_container,mBoutiqueFragment)
                   .add(R.id.fragment_container,mCotegoryFragment)
+                  .add(R.id.fragment_container,mPersonFragment)
+                  .hide(mPersonFragment)
                   .hide(mCotegoryFragment)
                   .hide(mBoutiqueFragment)
                   .show(mFragment)
@@ -100,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                   index=4;
                 }
-                   startActivity(new Intent(this,LoginActivity.class));
-
                   break;
               case R.id.layout_cart:
                   index=3;

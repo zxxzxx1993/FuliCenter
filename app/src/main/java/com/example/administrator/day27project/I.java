@@ -52,6 +52,7 @@ public interface I {
     int CATEGORY_GOOD=1;
     int CAT_ID=0;
     int REQUST_CODE_LOGIN = 102;
+    String AVATAR_SUFFIX ="m_avatar_suffix" ;
 
     interface Goods {
         String KEY_RESULT = "result";
