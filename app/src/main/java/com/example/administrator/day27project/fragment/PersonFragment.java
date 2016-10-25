@@ -53,9 +53,7 @@ public class PersonFragment extends BaseFragment {
         View layout = inflater.inflate(R.layout.fragment_person, container, false);
         ButterKnife.bind(this, layout);
         mContext= (MainActivity) getContext();
-
         super.onCreateView(inflater, container, savedInstanceState);
-
         return layout;
     }
 

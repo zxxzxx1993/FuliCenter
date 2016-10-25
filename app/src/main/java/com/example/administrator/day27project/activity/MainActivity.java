@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i(" 哈哈哈哈 ");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
                  .add(R.id.fragment_container,mFragment)
                   .add(R.id.fragment_container,mBoutiqueFragment)
                   .add(R.id.fragment_container,mCotegoryFragment)
-                  .add(R.id.fragment_container,mPersonFragment)
-                  .hide(mPersonFragment)
                   .hide(mCotegoryFragment)
                   .hide(mBoutiqueFragment)
                   .show(mFragment)
@@ -141,14 +139,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(FuLiCenterApplication.getUserAvatar()!=null){
+            index =4;
+        }
        choice();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == I.REQUST_CODE_LOGIN&&FuLiCenterApplication.getUserAvatar()!=null){
-            index = 4;
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.e("我再日你","getUserAvatar"+FuLiCenterApplication.getUserAvatar());
+//        if (requestCode == I.REQUST_CODE_LOGIN&&FuLiCenterApplication.getUserAvatar()!=null){
+//            index = 4;
+//            Log.e("我日你","getUserAvatar"+FuLiCenterApplication.getUserAvatar());
+//        }
+//    }
 }

@@ -44,11 +44,9 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
                 String username = SharePrefrenceUtils.getInstance(context).getUser();
-                Log.e("卧槽","username="+username);
                 if (userAvatar==null&&username!=null){
                     UserDao dao = new UserDao(context);
                     userAvatar = dao.getUser(username);
-                    Log.e("卧槽","user="+userAvatar);
                     if (userAvatar!=null){
                         FuLiCenterApplication.setUserAvatar(userAvatar);
                     }
