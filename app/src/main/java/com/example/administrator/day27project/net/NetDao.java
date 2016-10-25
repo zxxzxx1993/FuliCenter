@@ -13,6 +13,7 @@ import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.bean.Result;
 import com.example.administrator.day27project.utils.MD5;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -97,6 +98,26 @@ public class NetDao {
                 .addParam(I.User.USER_NAME,username)
                 .addParam(I.User.PASSWORD, MD5.getMessageDigest(password))
                 .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void updatenick(Context context, String username, String nick, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =  new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+                .addParam(I.User.USER_NAME,username)
+                .addParam(I.User.NICK,nick)
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void updateAvatar(Context context, String username, File file, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils =  new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
+                .addParam(I.NAME_OR_HXID,username)
+                .addParam(I.AVATAR_TYPE,"user_avatar")
+                .addFile2(file)
+                .targetClass(String.class)
+                .post()
                 .execute(listener);
     }
 }
