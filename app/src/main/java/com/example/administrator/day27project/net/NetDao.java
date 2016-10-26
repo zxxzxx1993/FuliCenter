@@ -9,6 +9,7 @@ import com.example.administrator.day27project.bean.BoutiqueBean;
 import com.example.administrator.day27project.bean.CategoryChildBean;
 import com.example.administrator.day27project.bean.CategoryGroupBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
+import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
 import com.example.administrator.day27project.bean.Result;
 import com.example.administrator.day27project.utils.MD5;
@@ -119,5 +120,14 @@ public class NetDao {
                 .targetClass(String.class)
                 .post()
                 .execute(listener);
+    }
+
+    public static void getCollectNumber(Context context, String username, OkHttpUtils.OnCompleteListener<MessageBean>  listener) {
+        OkHttpUtils<MessageBean>  utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.Collect.USER_NAME,username)
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
     }
 }

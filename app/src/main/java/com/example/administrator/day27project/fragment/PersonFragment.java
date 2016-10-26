@@ -3,6 +3,7 @@ package com.example.administrator.day27project.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,10 @@ import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.activity.LoginActivity;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.activity.PersonselfActivity;
+import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.UserAvatar;
+import com.example.administrator.day27project.net.NetDao;
+import com.example.administrator.day27project.net.OkHttpUtils;
 import com.example.administrator.day27project.utils.ImageLoader;
 import com.example.administrator.day27project.utils.MFGT;
 
@@ -62,6 +66,7 @@ public class PersonFragment extends BaseFragment {
     RelativeLayout mPersionMyOnlineShop;
     @Bind(R.id.m_Persion_My_Member_Card)
     RelativeLayout mPersionMyMemberCard;
+    UserAvatar user;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,10 +112,28 @@ public class PersonFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        UserAvatar user = FuLiCenterApplication.getUserAvatar();
+       user = FuLiCenterApplication.getUserAvatar();
         if (user != null) {
             mPersionUserNick.setText(user.getMuserNick());
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mPersionUserAvatar);
+            setCollectNumber();
         }
+    }
+    private void setCollectNumber() {
+        NetDao.getCollectNumber(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result!=null&&result.isSuccess()){
+                    mPersionCollectTreasure.setText(result.getMsg());
+                }else {
+                    mPersionCollectTreasure.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                mPersionCollectTreasure.setText(String.valueOf(0));
+            }
+        });
     }
 }
