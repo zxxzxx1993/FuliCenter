@@ -64,7 +64,6 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.back)
     public void back() {
-        Log.e("我草泥马","time="+FuLiCenterApplication.getInstance().getTime());
         finish();
     }
 

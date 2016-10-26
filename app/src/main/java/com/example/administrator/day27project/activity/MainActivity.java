@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         if (index == 4&& FuLiCenterApplication.getUserAvatar()==null){
             index = 0;
         }
-        Log.e("我草泥马  MainActivity","index="+index);
        choice();
     }
 
