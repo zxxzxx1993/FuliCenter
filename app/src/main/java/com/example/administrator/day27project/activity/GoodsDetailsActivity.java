@@ -23,6 +23,8 @@ import com.example.administrator.day27project.view.SlideAutoLoopView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 public class GoodsDetailsActivity extends AppCompatActivity {
     @Bind(R.id.chnia_name)
@@ -44,8 +46,9 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     ImageView collect;
     @Bind(R.id.layout_goods_details)
     LinearLayout layoutGoodsDetails;
-     UserAvatar userAvatar;
+    UserAvatar userAvatar;
     boolean isCollect = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,35 +117,34 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     public void onClick() {
         userAvatar = FuLiCenterApplication.getUserAvatar();
         String muserName = userAvatar.getMuserName();
-        if (!isCollect){
-         NetDao.CollectGoods(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-             @Override
-             public void onSuccess(MessageBean result) {
-                if (result.isSuccess()){
-                    CommonUtils.showShortToast("收藏成功");
-                    isCollect=!isCollect;
-                    collect.setImageResource(R.mipmap.bg_collect_out);
-                }else {
-                    CommonUtils.showShortToast("收藏失败");
+        if (!isCollect) {
+            NetDao.CollectGoods(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result.isSuccess()) {
+                        CommonUtils.showShortToast("收藏成功");
+                        isCollect = !isCollect;
+                        collect.setImageResource(R.mipmap.bg_collect_out);
+                    } else {
+                        CommonUtils.showShortToast("收藏失败");
+                    }
                 }
-             }
 
-             @Override
-             public void onError(String error) {
-                 CommonUtils.showShortToast("收藏失败");
-                 Log.e("error",error);
-             }
-         });
-     }
-        else {
+                @Override
+                public void onError(String error) {
+                    CommonUtils.showShortToast("收藏失败");
+                    Log.e("error", error);
+                }
+            });
+        } else {
             NetDao.deleteCollect(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
                 @Override
                 public void onSuccess(MessageBean result) {
-                    if (result.isSuccess()){
+                    if (result.isSuccess()) {
                         CommonUtils.showShortToast("取消成功");
-                        isCollect=!isCollect;
+                        isCollect = !isCollect;
                         collect.setImageResource(R.mipmap.bg_collect_in);
-                    }else {
+                    } else {
                         CommonUtils.showShortToast("取消失败");
                     }
                 }
@@ -150,7 +152,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onError(String error) {
                     CommonUtils.showShortToast("删除失败");
-                    Log.e("error",error);
+                    Log.e("error", error);
                 }
             });
         }
@@ -165,30 +167,61 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     private void IsCollect() {
         userAvatar = FuLiCenterApplication.getUserAvatar();
         String muserName = userAvatar.getMuserName();
-       NetDao.isCollect(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-           @Override
-           public void onSuccess(MessageBean result) {
-                 if (result.isSuccess()){
-                     isCollect = true;
-                 }else {
-                     isCollect = false;
-                 }
-               setColectStatus();
-           }
+        NetDao.isCollect(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result.isSuccess()) {
+                    isCollect = true;
+                } else {
+                    isCollect = false;
+                }
+                setColectStatus();
+            }
 
-           @Override
-           public void onError(String error) {
-               setColectStatus();
-           }
-       });
+            @Override
+            public void onError(String error) {
+                setColectStatus();
+            }
+        });
         setColectStatus();
     }
 
     private void setColectStatus() {
-        if (isCollect){
+        if (isCollect) {
             collect.setImageResource(R.mipmap.bg_collect_out);
-        }else {
+        } else {
             collect.setImageResource(R.mipmap.bg_collect_in);
         }
+    }
+
+    @OnClick(R.id.share)
+    public void share() {
+        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+// 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle("标题");
+        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+        oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("ShareSDK");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
+
+// 启动分享GUI
+        oks.show(this);
     }
 }
