@@ -124,6 +124,14 @@ public class CollectAdapter extends RecyclerView.Adapter {
         CollectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            layoutGoods.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int number = (int) layoutGoods.getTag();
+                    int tag =    mlist.get(number).getGoodsId();
+                    mcontext.startActivity(new Intent(mcontext, GoodsDetailsActivity.class).putExtra(I.Goods.KEY_GOODS_ID,tag));
+                }
+            });
             iv_collect_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

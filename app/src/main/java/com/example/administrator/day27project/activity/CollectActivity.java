@@ -46,9 +46,11 @@ public class CollectActivity extends AppCompatActivity {
         mlist = new ArrayList<>();
         mCategoryFragment = new CollectFragment();
         mGoodsAdapter = new CollectAdapter(mContext,mlist);
+  initFragment();
 
-        initFragment();
     }
+
+
 
     private void toFinash() {
         UserAvatar userAvatar = FuLiCenterApplication.getUserAvatar();
@@ -67,5 +69,11 @@ public class CollectActivity extends AppCompatActivity {
                 .add(R.id.fragment_collect, mCategoryFragment)
                 .show(mCategoryFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FuLiCenterApplication.getInstance().setTime(1);
     }
 }

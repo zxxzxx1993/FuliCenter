@@ -150,5 +150,9 @@ public class CollectFragment extends Fragment {
         rv.setAdapter(mGoodsAdapter);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData(0);
+    }
 }

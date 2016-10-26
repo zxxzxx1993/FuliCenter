@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
         initView();
         initFragment();
@@ -141,13 +142,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        time =FuLiCenterApplication.getInstance().getTime();
         if (time!=0&&FuLiCenterApplication.getUserAvatar()!=null){
             index = 4;
+        }else {
+            index = 0;
         }
         time++;
         if (index == 4&& FuLiCenterApplication.getUserAvatar()==null){
             index = 0;
         }
+        Log.e("我草泥马  MainActivity","index="+index);
        choice();
     }
 

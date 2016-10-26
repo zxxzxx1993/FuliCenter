@@ -12,6 +12,15 @@ public class FuLiCenterApplication extends Application{
     public static FuLiCenterApplication application;
     private  static FuLiCenterApplication instance;
     public static UserAvatar userAvatar;
+     int time;
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 
     public static UserAvatar getUserAvatar() {
         return userAvatar;
