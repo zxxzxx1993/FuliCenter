@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.Result;
 import com.example.administrator.day27project.bean.UserAvatar;
 import com.example.administrator.day27project.dao.SharePrefrenceUtils;
@@ -95,7 +96,10 @@ public class PersonselfActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         tvNick.setText(FuLiCenterApplication.getUserAvatar().getMuserNick());
+
     }
+
+
 
     @OnClick(R.id.setingnick)
     public void onClick() {

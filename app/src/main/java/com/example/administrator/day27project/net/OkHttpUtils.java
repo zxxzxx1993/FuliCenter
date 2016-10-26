@@ -3,6 +3,7 @@ package com.example.administrator.day27project.net;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
@@ -346,7 +347,10 @@ public class OkHttpUtils<T> {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
+                Log.e("mClazz","mClazz="+mClazz);
+
                 if(mClazz.equals(String.class)){
+                    Log.e("String.class","String.class="+String.class);
                     Message msg = Message.obtain();
                     msg.what = RESULT_SUCCESS;
                     msg.obj = json;

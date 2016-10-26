@@ -1,6 +1,7 @@
 package com.example.administrator.day27project.net;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.activity.CategoryChildActivity;
@@ -8,6 +9,7 @@ import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.bean.BoutiqueBean;
 import com.example.administrator.day27project.bean.CategoryChildBean;
 import com.example.administrator.day27project.bean.CategoryGroupBean;
+import com.example.administrator.day27project.bean.CollectBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
 import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
@@ -129,5 +131,16 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
 
+    }
+    public static void getCollect(Context context, String username,int pageId, OkHttpUtils.OnCompleteListener<CollectBean[]>  listener) {
+
+        OkHttpUtils<CollectBean[]>  utils = new OkHttpUtils<>(context);
+
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                .addParam(I.Collect.USER_NAME,String.valueOf(username))
+                .addParam(I.PAGE_ID,String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(CollectBean[].class)
+                .execute(listener);
     }
 }
