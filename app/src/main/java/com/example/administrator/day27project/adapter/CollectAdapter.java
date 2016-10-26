@@ -11,11 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.activity.GoodsDetailsActivity;
 import com.example.administrator.day27project.bean.CollectBean;
+import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.NewGoodsBean;
+import com.example.administrator.day27project.dao.SharePrefrenceUtils;
+import com.example.administrator.day27project.net.NetDao;
+import com.example.administrator.day27project.net.OkHttpUtils;
+import com.example.administrator.day27project.utils.CommonUtils;
 import com.example.administrator.day27project.utils.ImageLoader;
 
 import java.util.ArrayList;
@@ -37,7 +43,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
     String footView;
 
 
-    int sortby = I.SORT_BY_ADDTIME_DESC;
+
     public void setFootView(String footView) {
         this.footView = footView;
         notifyDataSetChanged();
@@ -76,7 +82,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
             CollectBean goods = mlist.get(position);
             ImageLoader.downloadImg(mcontext,goodsViewHolder.ivGoodsThumb,goods.getGoodsThumb());
             goodsViewHolder.tvGoodsName.setText(goods.getGoodsName());
-            goodsViewHolder.layoutGoods.setTag(goods.getGoodsId());
+            goodsViewHolder.layoutGoods.setTag(position);
         }
     }
 
@@ -118,11 +124,32 @@ public class CollectAdapter extends RecyclerView.Adapter {
         CollectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            layoutGoods.setOnClickListener(new View.OnClickListener() {
+            iv_collect_del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int tag = (int) layoutGoods.getTag();
-                    mcontext.startActivity(new Intent(mcontext, GoodsDetailsActivity.class).putExtra(I.Goods.KEY_GOODS_ID,tag));
+                    String muserName = FuLiCenterApplication.getUserAvatar().getMuserName();
+
+                     final int number = (int) layoutGoods.getTag();
+                int tag =    mlist.get(number).getGoodsId();
+                    NetDao.deleteCollect(mcontext, tag, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if (result.isSuccess()){
+                                CommonUtils.showShortToast("删除成功");
+                                deleteCollect(number);
+                            }
+                        }
+
+                        private void deleteCollect(int number) {
+                            mlist.remove(number);
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
                 }
             });
 

@@ -3,7 +3,6 @@ package com.example.administrator.day27project.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.day27project.FuLiCenterApplication;
-import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
+import com.example.administrator.day27project.activity.CollectActivity;
 import com.example.administrator.day27project.activity.LoginActivity;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.activity.PersonselfActivity;
@@ -67,6 +66,7 @@ public class PersonFragment extends BaseFragment {
     @Bind(R.id.m_Persion_My_Member_Card)
     RelativeLayout mPersionMyMemberCard;
     UserAvatar user;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,26 +106,27 @@ public class PersonFragment extends BaseFragment {
 
     @OnClick(R.id.m_Persion_Setting)
     public void onClick() {
-        startActivity(new Intent(mContext,PersonselfActivity.class));
+        startActivity(new Intent(mContext, PersonselfActivity.class));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-       user = FuLiCenterApplication.getUserAvatar();
+        user = FuLiCenterApplication.getUserAvatar();
         if (user != null) {
             mPersionUserNick.setText(user.getMuserNick());
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, mPersionUserAvatar);
             setCollectNumber();
         }
     }
+
     private void setCollectNumber() {
         NetDao.getCollectNumber(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
             @Override
             public void onSuccess(MessageBean result) {
-                if (result!=null&&result.isSuccess()){
+                if (result != null && result.isSuccess()) {
                     mPersionCollectTreasure.setText(result.getMsg());
-                }else {
+                } else {
                     mPersionCollectTreasure.setText(String.valueOf(0));
                 }
             }
@@ -135,5 +136,10 @@ public class PersonFragment extends BaseFragment {
                 mPersionCollectTreasure.setText(String.valueOf(0));
             }
         });
+    }
+
+    @OnClick(R.id.collect_goods)
+    public void gotocollect() {
+        startActivity(new Intent(mContext, CollectActivity.class));
     }
 }
