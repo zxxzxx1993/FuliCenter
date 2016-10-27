@@ -1,5 +1,6 @@
 package com.example.administrator.day27project.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -9,17 +10,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.adapter.CategoryAdapter;
+import com.example.administrator.day27project.bean.CartBean;
+import com.example.administrator.day27project.bean.UserAvatar;
 import com.example.administrator.day27project.fragment.BoutiqueFragment;
 import com.example.administrator.day27project.fragment.CartFragment;
 import com.example.administrator.day27project.fragment.CotegoryFragment;
 import com.example.administrator.day27project.fragment.NewGoodsFragment;
 import com.example.administrator.day27project.fragment.PersonFragment;
+import com.example.administrator.day27project.net.NetDao;
+import com.example.administrator.day27project.net.OkHttpUtils;
+import com.example.administrator.day27project.utils.ConvertUtils;
 import com.example.administrator.day27project.utils.L;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton cart;
     RadioButton [] btns;
     int index=0;
+    TextView tvCartNum;
     int currentindex=0;
     int time = 0;
     Fragment[] mFrtagments;
@@ -46,11 +56,14 @@ public class MainActivity extends AppCompatActivity {
     CotegoryFragment mCotegoryFragment;
     PersonFragment  mPersonFragment;
     CartFragment mcartFragment;
+    MainActivity context;
+    UserAvatar userAvatar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this;
+        userAvatar = FuLiCenterApplication.getUserAvatar();
         ButterKnife.bind(this);
         initView();
         initFragment();
@@ -86,6 +99,22 @@ public class MainActivity extends AppCompatActivity {
         btns[0] = newGoods;
         btns[4] = personalCenter;
         btns[3] = cart;
+        tvCartNum = (TextView) findViewById(R.id.tvCartHint);
+
+        NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+            @Override
+            public void onSuccess(CartBean[] result) {
+                if (result!=null){
+                    ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
+                    tvCartNum.setText(""+cartBeen.size());
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
 
@@ -152,6 +181,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+            @Override
+            public void onSuccess(CartBean[] result) {
+                if (result!=null){
+                    ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
+                    tvCartNum.setText(""+cartBeen.size());
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
         time =FuLiCenterApplication.getInstance().getTime();
         if (time!=0&&FuLiCenterApplication.getUserAvatar()!=null){
             index = 4;
@@ -173,4 +216,5 @@ public class MainActivity extends AppCompatActivity {
 //            index = 4;
 //        }
 //    }
+
 }

@@ -1,6 +1,11 @@
 package com.example.administrator.day27project.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -11,14 +16,18 @@ import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.bean.AlbumsBean;
+import com.example.administrator.day27project.bean.CartBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
 import com.example.administrator.day27project.bean.MessageBean;
 import com.example.administrator.day27project.bean.UserAvatar;
 import com.example.administrator.day27project.net.NetDao;
 import com.example.administrator.day27project.net.OkHttpUtils;
 import com.example.administrator.day27project.utils.CommonUtils;
+import com.example.administrator.day27project.utils.ConvertUtils;
 import com.example.administrator.day27project.view.FlowIndicator;
 import com.example.administrator.day27project.view.SlideAutoLoopView;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +57,11 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     LinearLayout layoutGoodsDetails;
     UserAvatar userAvatar;
     boolean isCollect = false;
-
+    @Bind(R.id.cart_num)
+    TextView cartNum;
+    updateCartRecevier  mRecevier;
+    IntentFilter intentFilter;
+    LocalBroadcastManager broadcastManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +69,41 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         goodsId = getIntent().getIntExtra(I.Goods.KEY_GOODS_ID, 0);
         Log.e("zxxzxx", goodsId + "");
         ButterKnife.bind(this);
+        userAvatar= FuLiCenterApplication.getUserAvatar();
         context = this;
         FuLiCenterApplication.getInstance().setTime(0);
         if (goodsId == 0) {
             finish();
         }
         goodsDetailsBean = new GoodsDetailsBean();
+        initView();
         initData();
+    }
+
+    private void initView() {
+        broadcastManager = LocalBroadcastManager.getInstance(context);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(I.UPDATE_CART_NUMBER);
+        mRecevier = new updateCartRecevier(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+                    @Override
+                    public void onSuccess(CartBean[] result) {
+                        if (result!=null){
+                            ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
+                            cartNum.setText(""+cartBeen.size());
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+        };
+        broadcastManager.registerReceiver(mRecevier, intentFilter);
     }
 
     @OnClick(R.id.back)
@@ -109,6 +150,20 @@ public class GoodsDetailsActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 finish();
+            }
+        });
+        NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+            @Override
+            public void onSuccess(CartBean[] result) {
+                if (result!=null){
+                    ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
+                    cartNum.setText(""+cartBeen.size());
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
             }
         });
     }
@@ -223,5 +278,25 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
 // 启动分享GUI
         oks.show(this);
+    }
+
+    @OnClick(R.id.iv_cart)
+    public void gotoCart() {
+        NetDao.addCart(context, goodsId, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(I.UPDATE_CART_NUMBER));
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+    public class updateCartRecevier extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        }
     }
 }

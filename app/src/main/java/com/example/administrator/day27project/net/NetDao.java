@@ -173,7 +173,7 @@ public class NetDao {
 
     }
 
-    public static void downloadCart(MainActivity mcontext,String username, OkHttpUtils.OnCompleteListener<CartBean[]> onCompleteListener) {
+    public static void downloadCart(Context mcontext,String username, OkHttpUtils.OnCompleteListener<CartBean[]> onCompleteListener) {
         OkHttpUtils<CartBean[]>  utils = new OkHttpUtils<>(mcontext);
         utils.setRequestUrl(I.REQUEST_FIND_CARTS)
                 .addParam(I.Cart.USER_NAME,username)
@@ -195,6 +195,17 @@ public class NetDao {
                 .addParam(I.Cart.ID,String.valueOf(cartId))
                 .addParam(I.Cart.COUNT,String.valueOf(count))
                 .addParam(I.Cart.IS_CHECKED,String.valueOf(0))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    public static void addCart(Context context, int goodsId, String username, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean>  utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Goods.KEY_GOODS_ID,String.valueOf(goodsId))
+                .addParam(I.User.USER_NAME,username)
+                .addParam(I.Cart.COUNT,String.valueOf(1))
+                .addParam(I.Cart.IS_CHECKED,String .valueOf(0))
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
