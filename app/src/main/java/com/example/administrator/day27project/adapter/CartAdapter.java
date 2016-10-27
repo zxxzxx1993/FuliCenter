@@ -19,6 +19,9 @@ import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.activity.BoutiqueActivity;
 import com.example.administrator.day27project.bean.CartBean;
 import com.example.administrator.day27project.bean.GoodsDetailsBean;
+import com.example.administrator.day27project.bean.MessageBean;
+import com.example.administrator.day27project.net.NetDao;
+import com.example.administrator.day27project.net.OkHttpUtils;
 import com.example.administrator.day27project.utils.ImageLoader;
 
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class CartAdapter extends RecyclerView.Adapter {
     String footView;
     boolean isMore;
     boolean isChoice = false;
-
+    ArrayList<Boolean>  boolist  = new ArrayList<>();
     public void setFootView(String footView) {
         this.footView = footView;
     }
@@ -78,6 +81,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             cartViewHolder.goodsNum.setText("("+cartBean.getCount()+")");
             cartBean.setChecked(false);
             cartViewHolder.ivIschoice.setImageResource(R.mipmap.checkbox_normal);
+             boolist.add(position,false);
              LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
             cartViewHolder.ivIschoice.setTag(position);
     }
@@ -118,20 +122,80 @@ public class CartAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     int tag = (int) ivIschoice.getTag();
-                     if (!isChoice){
+                     if (!boolist.get(tag)){
                            ivIschoice.setImageResource(R.mipmap.checkbox_pressed);
-                          isChoice = !isChoice;
+                          boolist.set(tag,!boolist.get(tag));
                          mList.get(tag).setChecked(true);
-                         LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
                      }else {
-                         isChoice = !isChoice;
+                         boolist.set(tag,!boolist.get(tag));
                          ivIschoice.setImageResource(R.mipmap.checkbox_normal);
                          mList.get(tag).setChecked(false);
-                         LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
                      }
+                    LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                }
+            });
+            goodsSrc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                          int tag = (int) ivIschoice.getTag();
+                    int count = mList.get(tag).getCount();
+                    mList.get(tag).setCount(count+1);
+                    goodsNum.setText("("+(count+1)+")");
+                    NetDao.updaCart(mcontext, mList.get(tag).getId(), mList.get(tag).getCount(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
 
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+                    LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                }
+            });
+            goodsDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int tag = (int) ivIschoice.getTag();
+                    int count = mList.get(tag).getCount();
+                    if (count==1){
+                        NetDao.deleteCart(mcontext, mList.get(tag).getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                mList.remove(tag);
+                                if (mList.size()==0){
+                                    LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_CART));
+                                }
+                                notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                    }
+                   else {
+                    mList.get(tag).setCount(count-1);
+                    goodsNum.setText("("+(count-1)+")");
+                    }
+                    NetDao.updaCart(mcontext, mList.get(tag).getId(), mList.get(tag).getCount(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+                    LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
                 }
             });
         }
+
     }
 }
