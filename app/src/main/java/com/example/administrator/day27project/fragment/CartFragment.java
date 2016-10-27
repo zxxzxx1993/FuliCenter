@@ -82,6 +82,15 @@ public class CartFragment extends BaseFragment {
             }
         };
         broadcastManager.registerReceiver(mRecevier, intentFilter);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(I.REQUEST_CART);
+        mRecevier = new updateCartRecevier(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                initData(0);
+            }
+        };
+        broadcastManager.registerReceiver(mRecevier, intentFilter);
     }
 
 
@@ -121,6 +130,7 @@ public class CartFragment extends BaseFragment {
                 Log.e("error:", error);
             }
         });
+
     }
 
     protected void initView() {
