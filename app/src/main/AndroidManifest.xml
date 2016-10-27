@@ -65,9 +65,6 @@
                     android:exported="true"
                     android:screenOrientation="portrait" />
         </activity>
-
-
-
         <!--share SDK-->
     </application>
 

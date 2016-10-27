@@ -6,7 +6,7 @@
     android:id="@+id/lin_cart"
     android:layout_height="100dp">
      <ImageView
-         android:layout_weight="1"
+         android:button="@null"
       android:id="@+id/iv_ischoice"
       android:src="@mipmap/checkbox_normal"
       android:layout_width="30dp"

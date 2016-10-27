@@ -2,12 +2,16 @@ package com.example.administrator.day27project.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.administrator.day27project.I;
@@ -30,6 +34,7 @@ public class CartAdapter extends RecyclerView.Adapter {
     ArrayList<CartBean> mList;
     String footView;
     boolean isMore;
+    boolean isChoice = false;
 
     public void setFootView(String footView) {
         this.footView = footView;
@@ -41,20 +46,8 @@ public class CartAdapter extends RecyclerView.Adapter {
     }
 
     public void initData(ArrayList<CartBean> list) {
-        if (mList != null) {
-            mList.clear();
-        }
-        mList.addAll(list);
+         mList=list;
         notifyDataSetChanged();
-    }
-
-    public void addData(ArrayList<CartBean> list) {
-        mList.addAll(list);
-        notifyDataSetChanged();
-    }
-
-    public void setMore(boolean more) {
-        isMore = more;
     }
 
     public CartAdapter(Context context, ArrayList<CartBean> mList) {
@@ -75,7 +68,7 @@ public class CartAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
             CartViewHolder cartViewHolder = (CartViewHolder) holder;
-            CartBean cartBean = mList.get(position);
+            final CartBean cartBean = mList.get(position);
             GoodsDetailsBean goods = cartBean.getGoods();
             if (goods!=null){
                 ImageLoader.downloadImg(mcontext,cartViewHolder.goodsPicture,goods.getGoodsThumb());
@@ -84,16 +77,18 @@ public class CartAdapter extends RecyclerView.Adapter {
             }
             cartViewHolder.goodsNum.setText("("+cartBean.getCount()+")");
             cartBean.setChecked(false);
+            cartViewHolder.ivIschoice.setImageResource(R.mipmap.checkbox_normal);
+             LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+            cartViewHolder.ivIschoice.setTag(position);
     }
 
     @Override
     public int getItemCount() {
-        return mList != null ? mList.size()  : 1;
+        return mList != null ? mList.size()  : 0;
     }
 
     @Override
     public int getItemViewType(int position) {
-
         return I.TYPE_ITEM;
     }
 
@@ -119,6 +114,24 @@ public class CartAdapter extends RecyclerView.Adapter {
         CartViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            ivIschoice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int tag = (int) ivIschoice.getTag();
+                     if (!isChoice){
+                           ivIschoice.setImageResource(R.mipmap.checkbox_pressed);
+                          isChoice = !isChoice;
+                         mList.get(tag).setChecked(true);
+                         LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                     }else {
+                         isChoice = !isChoice;
+                         ivIschoice.setImageResource(R.mipmap.checkbox_normal);
+                         mList.get(tag).setChecked(false);
+                         LocalBroadcastManager.getInstance(mcontext).sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                     }
+
+                }
+            });
         }
     }
 }
