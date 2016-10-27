@@ -15,6 +15,7 @@ import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.adapter.CategoryAdapter;
 import com.example.administrator.day27project.fragment.BoutiqueFragment;
+import com.example.administrator.day27project.fragment.CartFragment;
 import com.example.administrator.day27project.fragment.CotegoryFragment;
 import com.example.administrator.day27project.fragment.NewGoodsFragment;
 import com.example.administrator.day27project.fragment.PersonFragment;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     BoutiqueFragment mBoutiqueFragment;
     CotegoryFragment mCotegoryFragment;
     PersonFragment  mPersonFragment;
+    CartFragment mcartFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,17 +62,19 @@ public class MainActivity extends AppCompatActivity {
           mBoutiqueFragment = new BoutiqueFragment();
          mCotegoryFragment = new CotegoryFragment();
         mPersonFragment = new PersonFragment();
+        mcartFragment = new CartFragment();
         mFrtagments[0] = mFragment;
         mFrtagments[1] = mBoutiqueFragment;
         mFrtagments[2] = mCotegoryFragment;
+        mFrtagments[3] = mcartFragment;
         mFrtagments[4] = mPersonFragment;
           getSupportFragmentManager()
                   .beginTransaction()
                  .add(R.id.fragment_container,mFragment)
-                  .add(R.id.fragment_container,mBoutiqueFragment)
-                  .add(R.id.fragment_container,mCotegoryFragment)
-                  .hide(mCotegoryFragment)
-                  .hide(mBoutiqueFragment)
+//                  .add(R.id.fragment_container,mBoutiqueFragment)
+//                  .add(R.id.fragment_container,mCotegoryFragment)
+//                  .hide(mCotegoryFragment)
+//                  .hide(mBoutiqueFragment)
                   .show(mFragment)
                   .commit();
     }
@@ -105,7 +109,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                   break;
               case R.id.layout_cart:
+                  if (FuLiCenterApplication.getUserAvatar()==null){
+                      Intent intent = new Intent(this,LoginActivity.class);
+                      startActivityForResult(intent,I.REQUST_CODE_LOGIN);
+                      FuLiCenterApplication.getInstance().setTime(3);
+                  }else {
                   index=3;
+                  }
                   break;
           }
         choice();
@@ -145,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         time =FuLiCenterApplication.getInstance().getTime();
         if (time!=0&&FuLiCenterApplication.getUserAvatar()!=null){
             index = 4;
-        }else {
+        }else if (time==3){
             index = 0;
         }
         time++;

@@ -7,6 +7,7 @@ import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.activity.CategoryChildActivity;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.bean.BoutiqueBean;
+import com.example.administrator.day27project.bean.CartBean;
 import com.example.administrator.day27project.bean.CategoryChildBean;
 import com.example.administrator.day27project.bean.CategoryGroupBean;
 import com.example.administrator.day27project.bean.CollectBean;
@@ -170,5 +171,13 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
 
+    }
+
+    public static void downloadCart(MainActivity mcontext,String username, OkHttpUtils.OnCompleteListener<CartBean[]> onCompleteListener) {
+        OkHttpUtils<CartBean[]>  utils = new OkHttpUtils<>(mcontext);
+        utils.setRequestUrl(I.REQUEST_FIND_CARTS)
+                .addParam(I.Cart.USER_NAME,username)
+                .targetClass(CartBean[].class)
+                .execute(onCompleteListener);
     }
 }

@@ -2,9 +2,7 @@ package com.example.administrator.day27project.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.administrator.day27project.FuLiCenterApplication;
 import com.example.administrator.day27project.I;
 import com.example.administrator.day27project.R;
 import com.example.administrator.day27project.activity.MainActivity;
 import com.example.administrator.day27project.adapter.BoutiqueAdapter;
+import com.example.administrator.day27project.adapter.CartAdapter;
 import com.example.administrator.day27project.bean.BoutiqueBean;
-import com.example.administrator.day27project.bean.NewGoodsBean;
+import com.example.administrator.day27project.bean.CartBean;
 import com.example.administrator.day27project.net.NetDao;
 import com.example.administrator.day27project.net.OkHttpUtils;
 import com.example.administrator.day27project.utils.CommonUtils;
@@ -28,20 +28,21 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 /**
- * Created by Administrator on 2016/10/19.
+ * Created by Administrator on 2016/10/27.
  */
-public class BoutiqueFragment extends BaseFragment {
+public class CartFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
     RecyclerView rv;
     @Bind(R.id.srl)
     SwipeRefreshLayout srl;
-  LinearLayoutManager glm;
+    LinearLayoutManager glm;
     MainActivity mcontext;
-    BoutiqueAdapter  mBoutiqueAdapter;
-    ArrayList<BoutiqueBean> mList;
+    CartAdapter mBoutiqueAdapter;
+    ArrayList<CartBean> mList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,28 +50,16 @@ public class BoutiqueFragment extends BaseFragment {
         ButterKnife.bind(this, layout);
         mList = new ArrayList<>();
         mcontext = (MainActivity) getContext();
-        mBoutiqueAdapter = new BoutiqueAdapter(mcontext,mList);
-       super.onCreateView(inflater, container, savedInstanceState);
+        mBoutiqueAdapter = new CartAdapter(mcontext,mList);
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
 
     protected void setListener() {
         setPullDownlistener();
-        setPullUplistener();
     }
 
-    private void setPullUplistener() {
-        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int lastVisibleItemPosition = glm.findLastVisibleItemPosition();
-                if (newState==RecyclerView.SCROLL_STATE_IDLE && lastVisibleItemPosition>=mBoutiqueAdapter.getItemCount()-1 && mBoutiqueAdapter.isMore()){
-                    initData(I.ACTION_PULL_UP);
-                }
-            }
-        });
-    }
+
 
     private void setPullDownlistener() {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -84,14 +73,21 @@ public class BoutiqueFragment extends BaseFragment {
     }
 
     protected void initData(final int action) {
-        NetDao.downloadBoutique(mcontext,new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
+        String muserName = FuLiCenterApplication.getUserAvatar().getMuserName();
+        NetDao.downloadCart(mcontext,muserName,new OkHttpUtils.OnCompleteListener<CartBean[]>() {
             @Override
-            public void onSuccess(BoutiqueBean[] result) {
+            public void onSuccess(CartBean[] result) {
                 if (result!=null&&result.length>0){
                     srl.setRefreshing(false);
                     tvRefresh.setVisibility(View.GONE);
-                    ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
+                    ArrayList<CartBean> list = ConvertUtils.array2List(result);
                     mBoutiqueAdapter.setMore(list!=null&&list.size()>0);
+                    if (list!=null&&list.size()<10){
+                        mBoutiqueAdapter.setFootView("没有更多数据");
+                    }
+                    else{
+                        mBoutiqueAdapter.setFootView("加载更多数据");
+                    }
                     if (action==I.ACTION_PULL_UP)
                     {
                         mBoutiqueAdapter.addData(list);
