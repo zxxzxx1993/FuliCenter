@@ -1,10 +1,13 @@
 package com.example.administrator.day27project.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,17 +61,23 @@ public class MainActivity extends AppCompatActivity {
     CartFragment mcartFragment;
     MainActivity context;
     UserAvatar userAvatar;
+    updateCartRecevier  mRecevier;
+    IntentFilter intentFilter;
+    LocalBroadcastManager broadcastManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-        userAvatar = FuLiCenterApplication.getUserAvatar();
         ButterKnife.bind(this);
         initView();
         initFragment();
     }
-
+    public class updateCartRecevier extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        }
+    }
     private void initFragment() {
            mFrtagments = new Fragment[5];
            mFragment = new NewGoodsFragment();
@@ -93,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        broadcastManager = LocalBroadcastManager.getInstance(context);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(I.REQUEST_UPDATE_CART);
+        mRecevier = new updateCartRecevier(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateCartNum();
+            }
+        };
+        broadcastManager.registerReceiver(mRecevier, intentFilter);
       btns  = new RadioButton[5];
         btns[1] = boutique;
         btns[2] = category;
@@ -101,23 +120,27 @@ public class MainActivity extends AppCompatActivity {
         btns[3] = cart;
         tvCartNum = (TextView) findViewById(R.id.tvCartHint);
 
-        NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
-            @Override
-            public void onSuccess(CartBean[] result) {
-                if (result!=null){
-                    ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
-                    tvCartNum.setText(""+cartBeen.size());
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
     }
 
+   public void updateCartNum(){
+       userAvatar = FuLiCenterApplication.getUserAvatar();
+       if (userAvatar!=null){
+           NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+               @Override
+               public void onSuccess(CartBean[] result) {
+                   if (result!=null){
 
+                       ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
+                       tvCartNum.setText(""+cartBeen.size());
+                   }
+               }
+
+               @Override
+               public void onError(String error) {
+
+               }
+           }); }
+   }
     public  void onCheckedChange(View view){
           switch (view.getId()){
               case R.id.layout_boutique:
@@ -181,20 +204,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
-            @Override
-            public void onSuccess(CartBean[] result) {
-                if (result!=null){
-                    ArrayList<CartBean> cartBeen = ConvertUtils.array2List(result);
-                    tvCartNum.setText(""+cartBeen.size());
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+        updateCartNum();
         time =FuLiCenterApplication.getInstance().getTime();
         if (time!=0&&FuLiCenterApplication.getUserAvatar()!=null){
             index = 4;

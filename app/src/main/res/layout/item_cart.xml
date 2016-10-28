@@ -8,36 +8,37 @@
         android:textColor="#382d2d"
         android:layout_width="match_parent"
         android:layout_height="20dp" />
-    <LinearLayout
+    <RelativeLayout
         android:gravity="center_vertical"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="100dp">
         <ImageView
-            android:button="@null"
+            android:layout_marginTop="30dp"
             android:id="@+id/iv_ischoice"
             android:src="@mipmap/checkbox_normal"
             android:layout_width="30dp"
             android:layout_height="30dp" />
         <ImageView
-            android:layout_weight="1"
+            android:layout_toRightOf="@+id/iv_ischoice"
             android:layout_marginLeft="15dp"
             android:id="@+id/goods_picture"
             android:src="@drawable/nopic"
             android:layout_width="90dp"
             android:layout_height="90dp" />
         <LinearLayout
+            android:id="@+id/linlin"
+            android:layout_toRightOf="@+id/goods_picture"
             android:layout_marginLeft="15dp"
-            android:layout_weight="4"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="170dp"
+            android:layout_height="90dp">
             <TextView
                 android:id="@+id/goods_title"
                 android:text="寸衣寸衣寸衣寸衣寸衣"
                 android:textSize="23sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="170dp"
+                android:layout_height="60dp" />
             <LinearLayout
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -64,11 +65,13 @@
             </LinearLayout>
         </LinearLayout>
         <TextView
-            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/linlin"
             android:id="@+id/goods_price"
             android:text="￥138"
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

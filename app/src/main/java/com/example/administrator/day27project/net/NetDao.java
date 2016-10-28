@@ -203,7 +203,7 @@ public class NetDao {
         OkHttpUtils<MessageBean>  utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_ADD_CART)
                 .addParam(I.Goods.KEY_GOODS_ID,String.valueOf(goodsId))
-                .addParam(I.User.USER_NAME,username)
+                .addParam(I.Cart.USER_NAME,username)
                 .addParam(I.Cart.COUNT,String.valueOf(1))
                 .addParam(I.Cart.IS_CHECKED,String .valueOf(0))
                 .targetClass(MessageBean.class)

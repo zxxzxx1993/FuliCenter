@@ -152,6 +152,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        if (userAvatar!=null){
         NetDao.downloadCart(context, userAvatar.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
             @Override
             public void onSuccess(CartBean[] result) {
@@ -165,12 +166,16 @@ public class GoodsDetailsActivity extends AppCompatActivity {
             public void onError(String error) {
 
             }
-        });
+        });}
     }
 
     @OnClick(R.id.collect)
     public void onClick() {
         userAvatar = FuLiCenterApplication.getUserAvatar();
+        if (userAvatar==null){
+            startActivity(new Intent(context,LoginActivity.class));
+        }
+        else {
         String muserName = userAvatar.getMuserName();
         if (!isCollect) {
             NetDao.CollectGoods(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
@@ -210,7 +215,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                     Log.e("error", error);
                 }
             });
-        }
+        }}
     }
 
     @Override
@@ -221,6 +226,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
     private void IsCollect() {
         userAvatar = FuLiCenterApplication.getUserAvatar();
+        if (userAvatar!=null){
         String muserName = userAvatar.getMuserName();
         NetDao.isCollect(context, goodsId, muserName, new OkHttpUtils.OnCompleteListener<MessageBean>() {
             @Override
@@ -237,7 +243,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
             public void onError(String error) {
                 setColectStatus();
             }
-        });
+        });}
         setColectStatus();
     }
 
